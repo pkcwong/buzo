@@ -1,3 +1,3 @@
 import { Mongo } from 'meteor/mongo'
 
-Clients = new Mongo.Collection('clients');
+export let Clients = new Mongo.Collection('clients');

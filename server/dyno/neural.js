@@ -1,5 +1,7 @@
 let synaptic = require('synaptic');
 
+import {Clients} from "../database/clients";
+
 let Neuron = synaptic.Neuron,
 	Layer = synaptic.Layer,
 	Network = synaptic.Network,
@@ -57,7 +59,6 @@ export function run() {
 	let Data = Clients.find().fetch();
 	for (let i = 0; i != Data.length; i++) {
 		let obj = Data[i];
-		console.log(obj);
 		sub.post_like.activate(obj.post_like);
 		sub.post_comment.activate(obj.post_comment);
 		sub.shopping_average.activate(obj.shopping_average);
@@ -67,11 +68,12 @@ export function run() {
 		sub.follow_comp.activate(obj.follow_comp);
 		sub.term_life.activate(obj.term_life);
 		sub.loan_size.activate(obj.loan_size);
-		cat.social.activate();
-		cat.fame.activate();
-		cat.finance.activate();
-		cat.education.activate();
-		credibility.activate();
+		const social = cat.social.activate();
+		const fame =  cat.fame.activate();
+		const finance = cat.finance.activate();
+		const education = cat.education.activate();
+		const predict = credibility.activate();
+		console.log('\t' + parseFloat(social).toFixed(3) + '\t' + parseFloat(fame).toFixed(3) + '\t' + parseFloat(finance).toFixed(3) + '\t' + parseFloat(education).toFixed(3) + '\t=>\t' + parseFloat(predict).toFixed(3) + '\t<=\t' + parseFloat(obj.credibility).toFixed(3) + '\t(' + Math.abs(predict - obj.credibility) / obj.credibility + ')');
 		credibility.propagate(0.3, obj.credibility);
 	}
 }

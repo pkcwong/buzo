@@ -6,7 +6,7 @@ Router.route('/', function() {
 	this.render('main');
 });
 
-Template.hello.onCreated(() => {
+Template.main.onCreated(() => {
 
 });
 

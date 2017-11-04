@@ -1,6 +1,6 @@
-import {run} from "./neural";
+import {train} from "./neural";
 
 Meteor.setInterval(() => {
 	console.log("dyno restarted");
-	run();
-}, 100);
+	train();
+}, 20);

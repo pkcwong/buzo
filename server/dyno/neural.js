@@ -1,7 +1,7 @@
 let synaptic = require('synaptic');
 let math = require('mathjs');
 
-import {Clients} from "../database/clients";
+import { Clients } from "../database/clients";
 
 let Neuron = synaptic.Neuron,
 	Layer = synaptic.Layer,
@@ -10,7 +10,6 @@ let Neuron = synaptic.Neuron,
 	Architect = synaptic.Architect;
 
 let sub = {};
-let cat = {};
 
 sub['post_like'] = new Neuron();
 sub['post_comment'] = new Neuron();
@@ -22,73 +21,57 @@ sub['follow_comp'] = new Neuron();
 sub['term_life'] = new Neuron();
 sub['loan_size'] = new Neuron();
 
-cat['social'] = new Neuron();
-cat['fame'] = new Neuron();
-cat['finance'] = new Neuron();
-cat['education'] = new Neuron();
-
 let credibility = new Neuron();
 
-sub.post_like.project(cat.social); sub.post_like.squash = Neuron.squash.IDENTITY;
-//sub.post_like.project(cat.fame);
-/*
-sub.post_comment.project(cat.social);
-sub.post_comment.project(cat.fame);
+sub.post_like.project(credibility); sub.post_like.bias = 0;
+sub.post_comment.project(credibility); sub.post_comment.bias = 0;
+sub.shopping_average.project(credibility); sub.shopping_average.bias = 0;
+sub.platform_follow.project(credibility); sub.platform_follow.bias = 0;
+sub.income.project(credibility); sub.income.bias = 0;
+sub.job_exp.project(credibility); sub.job_exp.bias = 0;
+sub.follow_comp.project(credibility); sub.follow_comp.bias = 0;
+sub.term_life.project(credibility); sub.term_life.bias = 0;
+sub.loan_size.project(credibility); sub.loan_size.bias = 0;
 
-sub.shopping_average.project(cat.finance);
+let Data = Clients.find().fetch();
 
-sub.platform_follow.project(cat.social);
-sub.platform_follow.project(cat.fame);
-
-sub.income.project(cat.finance);
-
-sub.job_exp.project(cat.finance);
-sub.job_exp.project(cat.education);
-
-sub.follow_comp.project(cat.education);
-
-sub.term_life.project(cat.finance);
-
-sub.loan_size.project(cat.finance);
-*/
-cat.social.project(credibility); cat.social.squash = Neuron.squash.IDENTITY
-//cat.fame.project(credibility);
-/*
-cat.finance.project(credibility);
-cat.education.project(credibility);
-*/
-
-credibility.squash = Neuron.squash.IDENTITY;
-
-export function run() {
-	let Data = Clients.find().fetch();
+export function train() {
 	let error = 0;
-	//for (let i = 0; i != Data.length; i++) {
-		let obj = Data[0];
-		console.log(sub.post_like.activate(normalize(Data, "post_like", obj.post_like)));
-		/*
-		sub.post_comment.activate(normalize(Data, "post_comment", obj.post_comment));
-		sub.shopping_average.activate(normalize(Data, "shopping_average", obj.shopping_average));
-		sub.platform_follow.activate(normalize(Data, "platform_follow", obj.platform_follow));
-		sub.income.activate(normalize(Data, "income", obj.income));
-		sub.job_exp.activate(normalize(Data, "job_exp", obj.job_exp));
-		sub.follow_comp.activate(normalize(Data, "follow_comp", obj.follow_comp));
-		sub.term_life.activate(normalize(Data, "term_life", obj.term_life));
-		sub.loan_size.activate(normalize(Data, "loan_size", obj.loan_size));
-		*/
-		const social = cat.social.activate();
-		//const fame =  cat.fame.activate();
-		/*
-		const finance = cat.finance.activate();
-		const education = cat.education.activate();
-		*/
-		const predict = credibility.activate();
-		error += Math.abs(predict - obj.credibility) / obj.credibility;
-		//console.log('\t' + parseFloat(social).toFixed(3) + '\t' + parseFloat(fame).toFixed(3) + '\t' + parseFloat(finance).toFixed(3) + '\t' + parseFloat(education).toFixed(3) + '\t=>\t' + parseFloat(predict).toFixed(3) + '\t<=\t' + parseFloat(obj.credibility).toFixed(3) + '\t(' + Math.abs(predict - obj.credibility) / obj.credibility + ')');
-		console.log('\t' + parseFloat(social).toFixed(3) + '\t=>\t' + parseFloat(predict).toFixed(3) + '\t<=\t' + parseFloat(obj.credibility).toFixed(3) + '\t(' + Math.abs(predict - obj.credibility) / obj.credibility + ')');
-		credibility.propagate(0.3, (obj.credibility));
-	//}
+	for (let i = 0; i != Data.length; i++) {
+		let test = Data[i];
+		const predict = run(test);
+		error += Math.abs(predict - test.credibility) / test.credibility;
+		console.log('\t' + parseFloat(predict).toFixed(3) + '\t=>\t' + parseFloat(test.credibility).toFixed(3) + '\t(' + Math.abs(predict - test.credibility) / test.credibility + ')');
+		credibility.propagate(0.3, (test.credibility));
+	}
 	console.log('average error:\t' + error / Data.length);
+}
+
+export function run(test) {
+	sub.post_like.activate(normalize(Data, "post_like", test.post_like));
+	sub.post_comment.activate(normalize(Data, "post_comment", test.post_comment));
+	sub.shopping_average.activate(normalize(Data, "shopping_average", test.shopping_average));
+	sub.platform_follow.activate(normalize(Data, "platform_follow", test.platform_follow));
+	sub.income.activate(normalize(Data, "income", test.income));
+	sub.job_exp.activate(normalize(Data, "job_exp", test.job_exp));
+	sub.follow_comp.activate(normalize(Data, "follow_comp", test.follow_comp));
+	sub.term_life.activate(normalize(Data, "term_life", test.term_life));
+	sub.loan_size.activate(normalize(Data, "loan_size", test.loan_size));
+	return credibility.activate();
+}
+
+export function prediction(test) {
+	let social = [normalize(Data, "post_like", test.post_like), normalize(Data, "post_comment", test.post_comment)];
+	let fame = [normalize(Data, "post_like", test.post_like), normalize(Data, "post_comment", test.post_comment), normalize(Data, "platform_follow", test.platform_follow)];
+	let finance = [normalize(Data, "shopping_average", test.shopping_average), normalize(Data, "income", test.income), normalize(Data, "job_exp", test.job_exp)];
+	let education = [normalize(Data, "job_exp", test.job_exp), normalize(Data, "follow_comp", test.follow_comp)];
+	return {
+		credibility: run(test),
+		social: math.mean(social),
+		fame: math.mean(fame),
+		finance: math.mean(finance),
+		education: math.mean(education)
+	}
 }
 
 function sd(array, attribute) {

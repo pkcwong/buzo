@@ -1,0 +1,71 @@
+<template name="new">
+    <div class="ui center aligned form" id="id_new_form">
+        <div class="ui fluid column">
+            <p>
+            <form class = "ui form" method = "post">
+                <div class="two fields">
+                    <div class ="eight wide field">
+                        <label>Given Name</label>
+                        <input type = "text" name = "given-name" placeholder = "Given Name" id = "givenNameValue">
+                    </div>
+                    <div class = "eight wide field">
+                        <label>Last Name</label>
+                        <input type = "text" name = "last-name" placeholder = "Last Name" id = "lastNameValue">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class = "eight wide field">
+                        <label>Gender</label>
+                        <input type = "text" name = "gender" placeholder = "Gender" id = "genderValue">
+                    </div>
+                    <div class = "eight wide field">
+                        <label>Age</label>
+                        <input type = "text" name = "age" placeholder = "Age" id = "ageValue">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class = "eight wide field">
+                        <label>Marriage Status</label>
+                        <input type = "text" name = "marriage-status" placeholder = "Single/Married/Divorced" id = "marriageStatusValue">
+                    </div>
+                    <div class = "eight wide field">
+                        <label>No. of Child</label>
+                        <input type = "text" name = "child" placeholder = "No. of Child" id = "childValue">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class = "eight wide field">
+                        <label>Income</label>
+                        <input type = "text" name = "income" placeholder = "Income" id = "incomeValue">
+                    </div>
+                    <div class = "sixteen wide field">
+                        <label>Purchase History (type number only, no dollar sign)</label>
+                        <input type = "text" name = "purchaseHistory" placeholder = "PriceOfItem01, PriceOfItem02, PriceOfItem03 ..." id = "purchaseHistoryValue">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class = "eight wide field">
+                        <label>Education Level</label>
+                        <input type = "text" name = "education" placeholder = "Primary/Secondary/UG/PG/PHD" id = "education">
+                    </div>
+                    <div class = "sixteen wide field">
+                        <label>Job (https://www.hierarchystructure.com/wp-content/uploads/2013/01/Hierarchy-of-HR-Jobs.jpg)</label>
+                        <input type = "text" name = "purchaseHistory" placeholder = "HR Director/CHRO/HR Mentor ..." id = "job">
+                    </div>
+                </div>
+
+                <div class = "row" id="id_new_buttonRow">
+                    <div class="ui button" id="id_new_submit">
+                        <div> Submit
+                        </div>
+                    </div>
+                    <div class="ui button" id="id_new_back">
+                        <div> Back
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </p>
+        </div>
+    </div>
+</template>

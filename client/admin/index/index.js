@@ -7,25 +7,28 @@ Router.route('/admin/index', function() {
 });
 
 Template.index.onCreated(() => {
-
+    this.showDB = new ReactiveVar([]);
 });
 
 Template.index.onRendered(() => {
-
+    Meteor.call('csv::dump', (err, res) => {
+        this.showDB.set(res);
+    });
 });
 
-Template.index.helpers({});
+Template.index.helpers({
+    'getDB': () => {
+        return this.showDB.get();
+    }
+});
 
 Template.index.events({
 	'click #id_index_uploadButton': (event) => {
-		console.log("bye");
 		var fileToLoad = document.getElementById("id_index_chooseFile").files[0];
 		var fileReader = new FileReader();
 		fileReader.onload = function(fileLoadedEvent) {
 			var textFromFileLoaded = fileLoadedEvent.target.result;
-			console.log(textFromFileLoaded);
 			var json = csvJSON(textFromFileLoaded);
-			console.log(json);
 			Meteor.call('csv::upsert', json, (err, res) => {
 
 			});
@@ -33,7 +36,7 @@ Template.index.events({
 		fileReader.readAsText(fileToLoad, "UTF-8");
 	},
 	'click #id_index_newButton': (event) => {
-		console.log("hi");
+     window.location.assign("new");
 	}
 });
 

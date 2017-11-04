@@ -7,14 +7,18 @@ Router.route('/admin/index', function() {
 });
 
 Template.index.onCreated(() => {
-
+    this.showDB = new ReactiveVar("HI");
 });
 
 Template.index.onRendered(() => {
 
 });
 
-Template.index.helpers({});
+Template.index.helpers({
+    'getDB': () => {
+        return this.showDB.get();
+    }
+});
 
 Template.index.events({
     'click #id_index_uploadButton': (event) => {
@@ -23,16 +27,15 @@ Template.index.events({
         var fileReader = new FileReader();
         fileReader.onload = function(fileLoadedEvent){
             var textFromFileLoaded = fileLoadedEvent.target.result;
-            console.log(textFromFileLoaded);
             var json = csvJSON(textFromFileLoaded);
-            console.log(json);
         };
         fileReader.readAsText(fileToLoad, "UTF-8");
 
     },
+
     'click #id_index_newButton': (event) => {
-        console.log("hi");
     }
+
 });
 
 

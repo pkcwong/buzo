@@ -1,18 +1,26 @@
 import { Template } from 'meteor/templating';
 
 import './index.html';
-
 Router.route('/admin/index', function() {
 	this.render('index');
 });
-
+let dbID = [];
+let dbLength = 0;
 Template.index.onCreated(() => {
     this.showDB = new ReactiveVar([]);
 });
 
 Template.index.onRendered(() => {
     Meteor.call('csv::dump', (err, res) => {
-        this.showDB.set(res);
+        console.log(res);
+        console.log(res.length);
+        dbID = [];
+        dbLength = res.length;
+        for(var i = 0; i < res.length; i++){
+			dbID[i] = res[i]._id;
+		}
+        console.log(dbID);
+        this.showDB.set(dbID);
     });
 });
 
@@ -36,7 +44,13 @@ Template.index.events({
 		fileReader.readAsText(fileToLoad, "UTF-8");
 	},
 	'click #id_index_newButton': (event) => {
-     window.location.assign("new");
+     	window.location.assign("new");
+	},
+	'click #id_index_searchButton': (event) =>{
+		if($('input[id = "id_index_uid').val() != ""){
+            var url = "/admin/user/" + $('input[id = "id_index_uid').val()
+            window.location.assign(url);
+		}
 	}
 });
 
@@ -56,3 +70,11 @@ function csvJSON(csv) {
 	//return result; //JavaScript object
 	return JSON.stringify(result); //JSON
 }
+
+Handlebars.registerHelper('link', function(text, url) {
+    url = Handlebars.escapeExpression(url);
+    text = Handlebars.escapeExpression(text);
+    return new Handlebars.SafeString(
+        "<a href='" + url + "'>" + text + "</a>"
+    );
+});

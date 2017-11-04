@@ -4,7 +4,7 @@
             <div class = "ui label"> User ID
             </div>
             <input type="text" placeholder="Please input the User ID" id = "id_index_uid">
-            <div class="ui button" id = "searchButton">Search</div>
+            <div class="ui button" id = "id_index_searchButton">Search</div>
         </div>
     </div>
     <div class = "row" id="id_index_2ndRow">
@@ -20,7 +20,10 @@
     </div>
     <div class = "row" id="id_index_3rdRow">
         <div>
-            {{getDB}}
+            {{#each item in getDB}}
+                <div class="label"><a href='/admin/user/{{item}}'>{{item}}</a></div>
+            {{/each}}
+
         </div>
     </div>
 </template>

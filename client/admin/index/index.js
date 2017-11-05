@@ -48,7 +48,7 @@ Template.index.events({
 	},
 	'click #id_index_searchButton': (event) =>{
 		if($('input[id = "id_index_uid').val() != ""){
-            var url = "/admin/user/" + $('input[id = "id_index_uid').val()
+            var url = "/admin/user/" + $('input[id = "id_index_uid"]').val()
             window.location.assign(url);
 		}
 	}

@@ -11,7 +11,7 @@ Router.route('/admin/user/:_id', function() {
 
 Template.uid.onCreated(() => {
     this.userID = new ReactiveVar(pathID);
-    this.credability = new ReactiveVar(50);
+    this.credibility = new ReactiveVar(50);
     this.social = new ReactiveVar(20);
     this.fame = new ReactiveVar(30);
     this.finance = new ReactiveVar(40);
@@ -19,8 +19,8 @@ Template.uid.onCreated(() => {
 });
 
 Template.uid.onRendered(() => {
-    $('#id_uid_credability').progress({
-        percent: this.credability.get()
+    $('#id_uid_credibility').progress({
+        percent: this.credibility.get()
     });
     $('#id_uid_social').progress({
         percent: this.social.get()

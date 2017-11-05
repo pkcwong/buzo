@@ -4,23 +4,10 @@
 #id_uid_back{
     margin: 10px;
  }
+#id_uid_details{
+    margin: 10px;
+}
 #id_uid_credibility{
     margin: 50px;
     max-width: 700px;
-}
-#id_uid_social{
-    margin: 50px;
-    max-width: 500px;
-}
-#id_uid_fame{
-    margin: 50px;
-    max-width: 500px;
-}
-#id_uid_finance{
-    margin: 50px;
-    max-width: 500px;
-}
-#id_uid_education{
-    margin: 50px;
-    max-width: 500px;
 }

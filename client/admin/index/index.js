@@ -12,14 +12,11 @@ Template.index.onCreated(() => {
 
 Template.index.onRendered(() => {
     Meteor.call('csv::dump', (err, res) => {
-        console.log(res);
-        console.log(res.length);
         dbID = [];
         dbLength = res.length;
         for(var i = 0; i < res.length; i++){
 			dbID[i] = res[i]._id;
 		}
-        console.log(dbID);
         this.showDB.set(dbID);
     });
 });

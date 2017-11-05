@@ -49,8 +49,8 @@ Template.new.events({
             job_exp: $('input[id = "jobExperienceValue"]').val(),
             follow_comp: $('input[id = "followCompanyValue"]').val(),
             term_life: $('input[id = "termLifeValue"]').val(),
-            loan_size: $('input[id = "loanSizeValue"]').val(),
-            edu: $('input[id = "educationYearValue"]').val()
+            loan_size: $('input[id = "loanSizeValue"]').val()
+           // edu: $('input[id = "educationYearValue"]').val()
         }
         console.log(test);
         Meteor.call('trainer::prediction', test, (err, res) => {

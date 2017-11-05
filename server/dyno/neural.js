@@ -20,6 +20,7 @@ sub['job_exp'] = new Neuron();
 sub['follow_comp'] = new Neuron();
 sub['term_life'] = new Neuron();
 sub['loan_size'] = new Neuron();
+sub['edu'] = new Neuron();
 
 credibility = new Neuron();
 
@@ -32,7 +33,7 @@ sub.job_exp.project(credibility); sub.job_exp.bias = 0;
 sub.follow_comp.project(credibility); sub.follow_comp.bias = 0;
 sub.term_life.project(credibility); sub.term_life.bias = 0;
 sub.loan_size.project(credibility); sub.loan_size.bias = 0;
-
+sub.edu.project(credibility); sub.edu.bias = 0;
 
 export function train() {
 	let Data = Clients.find().fetch();
@@ -48,6 +49,7 @@ export function train() {
 		sub.follow_comp.activate(normalize(Data, "follow_comp", test.follow_comp));
 		sub.term_life.activate(normalize(Data, "term_life", test.term_life));
 		sub.loan_size.activate(normalize(Data, "loan_size", test.loan_size));
+		sub.edu.activate(normalize(Data, "edu"), test.edu);
 		const predict = credibility.activate();
 		error += Math.abs(predict - test.credibility) / test.credibility;
 		console.log('\t' + parseFloat(predict).toFixed(3) + '\t=>\t' + parseFloat(test.credibility).toFixed(3) + '\t(' + Math.abs(predict - test.credibility) / test.credibility + ')');
@@ -67,6 +69,7 @@ export function run(test) {
 	sub.follow_comp.activate(normalize(Data, "follow_comp", test.follow_comp));
 	sub.term_life.activate(normalize(Data, "term_life", test.term_life));
 	sub.loan_size.activate(normalize(Data, "loan_size", test.loan_size));
+	sub.edu.activate(normalize(Data, "edu"), test.edu);
 	return credibility.activate();
 }
 
@@ -75,7 +78,7 @@ export function prediction(test) {
 	let social = [normalize(Data, "post_like", test.post_like), normalize(Data, "post_comment", test.post_comment)];
 	let fame = [normalize(Data, "post_like", test.post_like), normalize(Data, "post_comment", test.post_comment), normalize(Data, "platform_follow", test.platform_follow)];
 	let finance = [normalize(Data, "shopping_average", test.shopping_average), normalize(Data, "income", test.income), normalize(Data, "job_exp", test.job_exp)];
-	let education = [normalize(Data, "job_exp", test.job_exp), normalize(Data, "follow_comp", test.follow_comp)];
+	let education = [normalize(Data, "job_exp", test.job_exp), normalize(Data, "follow_comp", test.follow_comp), normalize(Data, "edu", test.edu)];
 	return {
 		credibility: run(test),
 		social: math.mean(social),

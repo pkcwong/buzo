@@ -11,9 +11,29 @@ Router.route('/admin/user/:_id', function() {
 
 Template.uid.onCreated(() => {
     this.userID = new ReactiveVar(pathID);
+    this.credability = new ReactiveVar(50);
+    this.social = new ReactiveVar(20);
+    this.fame = new ReactiveVar(30);
+    this.finance = new ReactiveVar(40);
+    this.education = new ReactiveVar(90);
 });
 
 Template.uid.onRendered(() => {
+    $('#id_uid_credability').progress({
+        percent: this.credability.get()
+    });
+    $('#id_uid_social').progress({
+        percent: this.social.get()
+    });
+    $('#id_uid_fame').progress({
+        percent: this.fame.get()
+    });
+    $('#id_uid_finance').progress({
+        percent: this.finance.get()
+    });
+    $('#id_uid_education').progress({
+        percent: this.education.get()
+    });
 });
 
 Template.uid.helpers({
@@ -23,5 +43,7 @@ Template.uid.helpers({
 });
 
 Template.uid.events({
-
+    'click #id_uid_back':(event) =>{
+        window.location.assign("/admin/index");
+    }
 });

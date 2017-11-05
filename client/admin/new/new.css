@@ -3,3 +3,26 @@
     margin: auto;
     top: 100px;
 }
+#id_uid_back{
+    margin: 10px;
+}
+#id_new_credability{
+    margin: 50px;
+    max-width: 700px;
+}
+#id_new_social{
+    margin: 50px;
+    max-width: 500px;
+}
+#id_new_fame{
+    margin: 50px;
+    max-width: 500px;
+}
+#id_new_finance{
+    margin: 50px;
+    max-width: 500px;
+}
+#id_new_education{
+    margin: 50px;
+    max-width: 500px;
+}

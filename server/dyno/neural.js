@@ -9,7 +9,7 @@ let Neuron = synaptic.Neuron,
 	Trainer = synaptic.Trainer,
 	Architect = synaptic.Architect;
 
-let sub = {};
+sub = {};
 
 sub['post_like'] = new Neuron();
 sub['post_comment'] = new Neuron();
@@ -21,7 +21,7 @@ sub['follow_comp'] = new Neuron();
 sub['term_life'] = new Neuron();
 sub['loan_size'] = new Neuron();
 
-let credibility = new Neuron();
+credibility = new Neuron();
 
 sub.post_like.project(credibility); sub.post_like.bias = 0;
 sub.post_comment.project(credibility); sub.post_comment.bias = 0;
@@ -33,13 +33,22 @@ sub.follow_comp.project(credibility); sub.follow_comp.bias = 0;
 sub.term_life.project(credibility); sub.term_life.bias = 0;
 sub.loan_size.project(credibility); sub.loan_size.bias = 0;
 
-let Data = Clients.find().fetch();
 
 export function train() {
+	let Data = Clients.find().fetch();
 	let error = 0;
 	for (let i = 0; i != Data.length; i++) {
 		let test = Data[i];
-		const predict = run(test);
+		sub.post_like.activate(normalize(Data, "post_like", test.post_like));
+		sub.post_comment.activate(normalize(Data, "post_comment", test.post_comment));
+		sub.shopping_average.activate(normalize(Data, "shopping_average", test.shopping_average));
+		sub.platform_follow.activate(normalize(Data, "platform_follow", test.platform_follow));
+		sub.income.activate(normalize(Data, "income", test.income));
+		sub.job_exp.activate(normalize(Data, "job_exp", test.job_exp));
+		sub.follow_comp.activate(normalize(Data, "follow_comp", test.follow_comp));
+		sub.term_life.activate(normalize(Data, "term_life", test.term_life));
+		sub.loan_size.activate(normalize(Data, "loan_size", test.loan_size));
+		const predict = credibility.activate();
 		error += Math.abs(predict - test.credibility) / test.credibility;
 		console.log('\t' + parseFloat(predict).toFixed(3) + '\t=>\t' + parseFloat(test.credibility).toFixed(3) + '\t(' + Math.abs(predict - test.credibility) / test.credibility + ')');
 		credibility.propagate(0.3, (test.credibility));
@@ -48,6 +57,7 @@ export function train() {
 }
 
 export function run(test) {
+	let Data = Clients.find().fetch();
 	sub.post_like.activate(normalize(Data, "post_like", test.post_like));
 	sub.post_comment.activate(normalize(Data, "post_comment", test.post_comment));
 	sub.shopping_average.activate(normalize(Data, "shopping_average", test.shopping_average));
@@ -61,6 +71,7 @@ export function run(test) {
 }
 
 export function prediction(test) {
+	let Data = Clients.find().fetch();
 	let social = [normalize(Data, "post_like", test.post_like), normalize(Data, "post_comment", test.post_comment)];
 	let fame = [normalize(Data, "post_like", test.post_like), normalize(Data, "post_comment", test.post_comment), normalize(Data, "platform_follow", test.platform_follow)];
 	let finance = [normalize(Data, "shopping_average", test.shopping_average), normalize(Data, "income", test.income), normalize(Data, "job_exp", test.job_exp)];
